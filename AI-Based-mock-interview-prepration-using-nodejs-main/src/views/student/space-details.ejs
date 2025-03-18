@@ -1,0 +1,130 @@
+<script>
+    function escapeHtml(str) {
+    return str.replace(/[&<>"'\/]/g, function (char) {
+        switch (char) {
+            case '&': return '&amp;';
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '"': return '&quot;';
+            case "'": return '&#39;';
+            case '/': return '&#47;';
+            default: return char;
+        }
+    });
+}
+</script>
+<div class="container mt-5">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="theme-gradient">Space Details</h2>
+      <div class="btn-section">
+          <% if (space.resumePath) { %>
+              <a class="btn-default bg-solid-primary" href="/Resumes/<%= space.resumePath %>">
+                  <span class="icon"><i class="feather-file"></i></span>
+                  <span>Download Resume</span>
+              </a>
+          <% } else { %>
+              <span>No resume uploaded</span>
+          <% } %>
+      </div>
+  </div>
+
+  <h3 class="section-title">Company Name: <strong><%= space.companyName %></strong></h3>
+  <h3 class="section-title">Position: <strong><%= space.jobPosition %></strong></h3>
+
+  <!-- Job Description and Resume Summary -->
+  <div class="mb-4">
+      <div class="rainbow-accordion-style accordion">
+          <div class="accordion" id="accordionExample">
+              <div class="accordion-item card bg-flashlight">
+                  <h2 class="accordion-header card-header" id="headingJobDesc">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseJobDesc" aria-expanded="false" aria-controls="collapseJobDesc">
+                          Job Description
+                      </button>
+                  </h2>
+                  <div id="collapseJobDesc" class="accordion-collapse collapse" aria-labelledby="headingJobDesc"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body card-body">
+                          <%- space.jobDescription || "N/A" %>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="accordion-item card bg-flashlight">
+                  <h2 class="accordion-header card-header" id="headingSummary">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary">
+                          Summary of Resume
+                      </button>
+                  </h2>
+                  <div id="collapseSummary" class="accordion-collapse collapse" aria-labelledby="headingSummary"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body card-body">
+                          <%- space.purifiedSummary || "No summary available" %>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <hr>
+  <hr>
+
+  <h3 class="title">Interview Rounds</h3>
+  <div class="row row--15 service-wrapper">
+      <% space.interviewRounds.forEach(round => { %>
+          <div class="col-lg-3 col-md-4 col-sm-6 col-6 sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="0">
+              <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
+                  <div class="content">
+                      <h4 class="title"><%= round.name %></h4>
+                      <% if (round.status === 'not completed') { %>
+                          <div class="header-btn d-none d-md-block">
+                              <a class="btn-default btn-small round" href="/space/<%= space._id %>/round/<%= round.name %>/start">
+                                  Start Interview <i class="feather-start"></i>
+                              </a>
+                          </div>
+                      <% } else { %>
+                          <div class="header-btn d-none d-md-block">
+                              <a class="btn-default btn-small round" data-bs-toggle="modal" data-bs-target="#summaryModal" 
+                                 data-summary="<%= round.summaryHTML%> ">
+                                  View Summary <i class="feather-start"></i>
+                              </a>
+                          </div>
+                      <% } %>
+                  </div>
+              </div>
+          </div>
+      <% }) %>
+  </div>
+  
+  
+</div>
+
+<!-- Modal for Viewing Summary -->
+<div id="summaryModal" class="modal rbt-modal-box like-modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content wrapper top-flashlight leftside light-xl">
+          <h5 class="title">Interview Summary</h5>
+          <div id="summaryContent">
+              <!-- Summary content will be dynamically injected -->
+          </div>
+          <button class="close-button" data-bs-dismiss="modal">
+              <i class="feather-x"></i>
+          </button>
+      </div>
+  </div>
+</div>
+
+<script>
+  // Injecting dynamic summary content into the modal
+  document.addEventListener('click', function (event) {
+      if (event.target.matches('[data-bs-target="#summaryModal"]')) {
+          const summary = event.target.getAttribute('data-summary');
+          document.getElementById('summaryContent').innerHTML = summary || 'No summary available.';
+      }
+  });
+
+
+
+</script>

@@ -1,0 +1,355 @@
+
+<% if (error) { %>
+    <div class="alert alert-danger text-center mt-3">
+        <%= error %>
+    </div>
+<% } %>
+
+<div class="rbt-panel-wrapper">
+
+    <header class="rbt-dashboard-header rainbow-header header-default header-left-align rbt-fluid-header">
+        <div class="container-fluid position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-2 col-md-6 col-7">
+                    <div class="header-left d-flex">
+                        <div class="expand-btn-grp">
+                            <button class="bg-solid-primary popup-dashboardleft-btn" id="rightbtn"><i
+                        class="feather-sidebar left"></i></button>
+                        </div>
+                        <div class="logo">
+                            <a href="/">
+                                <img class="logo-light" src="assets/images/logo/logo.png" alt="Corporate Logo">
+                                <img class="logo-dark" src="assets/images/logo/logo-dark.png" alt="Corporate Logo">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-6 col-5">
+                    <div class="header-right">
+                        <!-- Start admin Area  -->
+                        <!-- <div class="account-access rbt-user-wrapper right-align-dropdown">
+                            <div class="rbt-user ml--0">
+                                <a class="admin-img" href="code-generator.html#"><img src="assets/images/team/team-01.jpg" alt="Admin"></a>
+                            </div>
+                            <div class="rbt-user-menu-list-wrapper">
+                                <div class="inner">
+                                    <div class="rbt-admin-profile">
+                                        <div class="admin-thumbnail">
+                                            <img src="assets/images/team/team-01.jpg" alt="User Images">
+                                        </div>
+                                        <div class="admin-info">
+                                            <span class="name">Trent Adam</span>
+                                            <a class="rbt-btn-link color-primary" href="profile-details.html">View
+                                                Profile</a>
+                                        </div>
+                                    </div>
+                                    <ul class="user-list-wrapper user-nav">
+                                        <li>
+                                            <a href="profile-details.html">
+                                                <i class="feather-user"></i>
+                                                <span>Profile Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="notification.html">
+                                                <i class="feather-shopping-bag"></i>
+                                                <span>Change Password</span>
+                                            </a>
+                                        </li>
+                                   
+                                    </ul>
+                                    <hr class="mt--10 mb--10">
+                                  
+                                    
+                                    <ul class="user-list-wrapper">
+                                        <li>
+                                            <a href="signin.html">
+                                                <i class="feather-log-out"></i>
+                                                <span>Logout</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- Start admin Area  -->
+     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Start Left panel -->
+    <div class="rbt-left-panel popup-dashboardleft-section">
+        <div class="rbt-default-sidebar">
+            <div class="inner">
+                <div class="content-item-content">
+                    <div class="rbt-default-sidebar-wrapper">
+                        <nav class="mainmenu-nav">
+                            <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                <li><a href="/dashboard"><i class="feather-monitor"></i><span>Dashboard</span></a></li>
+                                <li class="has-submenu"><a class="collapse-btn collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><i
+                                    class="feather-plus-circle"></i><span>Profile</span></a>
+                                        <div class="collapse" id="collapseExample">
+                                            <ul class="submenu rbt-default-sidebar-list">
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="feather-user"></i>
+                                                        <span>Update Info</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="feather-shopping-bag"></i>
+                                                        <span>Change Password</span>
+                                                    </a>
+                                                </li>
+                                               
+                                                <li>
+                                                    <a href="/logout">
+                                                        <i class="feather-arrow-right"></i>
+                                                        <span>Logout</span>
+                                                    </a>
+                                                </li>
+                                              
+                                               
+                                            </ul>
+                                        </div>
+                                    </li>
+                            </ul>
+                                                     
+                        </nav>
+
+                        <div class="rbt-sm-separator"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="subscription-box">
+              
+                <div id="my_switcher" class="my_switcher-3">
+                    <ul>
+                        <li>
+                            <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                                <img src="assets/images/light/switch/sun-01.svg" alt="Switcher Image">
+                                <span class="text" title="Dark Mode">
+                        Dark</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                                <img class="moon-light" src="assets/images/light/switch/vector.svg" alt="Switcher Image">
+                                <span class="text" title="Light Mode">Light</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+             </div>
+    </div>
+    <!-- End Left panel -->
+
+    <!-- Main content -->
+    <div class="rbt-main-content area-right-expanded">
+        <div class="rbt-daynamic-page-content">
+
+            <!-- Dashboard Center Content -->
+            <div class="rbt-dashboard-content">
+                
+                <div class="content-page">
+                    <div class="chat-box-list pt--30" id="chatContainer">
+                     
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h1 class="h3">Spaces</h1>
+                              <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#createSpaceModal">
+                                <span class="icon"><i class="feather-plus-circle"></i></span>
+                                <span>New Space</span>
+                            </a>
+                            </div>
+                         
+                        
+                            <div class="row row--15 service-wrapper">
+                                <% spaces.forEach((space, index) => { %>
+                                 
+                                    <div
+                                    class="col-lg-3 col-md-4 col-sm-6 col-6 sal-animate"
+                                    data-sal="slide-up"
+                                    data-sal-duration="700"
+                                    data-sal-delay="<%= index * 100 %>"
+                                  >
+                                    <div
+                                      class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight"
+                                    >
+                                   
+                                      <!-- Content Section -->
+                                      <div class="content">
+                                        <!-- Job Position -->
+                                        <h4 class="title ">
+                                          <a href="/spaces/detail/<%= space._id %>" class="text-decoration-none">
+                                            <%= space.jobPosition %>
+                                          </a>
+                                        </h4>
+                                        
+                                        <!-- Company Name -->
+                                        <p class="description b1 color-gray mb--0">
+                                          <strong>Company:</strong> <%= space.companyName %>
+                                        </p>
+                                        
+                                        <!-- Interview Rounds -->
+                                        <div class="description b1 color-gray mb--0 mt-2">
+                                        
+                                          <ul class="list-unstyled d-flex justify-content-center gap-2  mb-0">
+                                            <% space.interviewRounds.forEach((round) => { %>
+                                              <li>
+                                                <% if (round.status === 'completed') { %>
+                                                  <i class="feather-check-circle text-success" title="<%= round.name %> - Completed"></i><%= round.name %>
+                                                
+                                                  <% } else { %>
+                                                  <i class="feather-x-circle text-danger" title="<%= round.name %> - Not Completed"></i><%= round.name %>
+                                                <% } %>
+                                                
+                                              </li>
+                                            <% }) %>
+                                          </ul>
+                                        </div>
+                                        <div class="header-btn d-none d-md-block">
+                                            <a class="btn-default btn-small round" target="_blank" href="/space/<%= space._id %>"> View Details <i class="feather-eye"></i></a>
+                                        </div>
+                                        <!-- Resume Summary (Optional) -->
+                                      
+                                      </div>
+                                    </div>
+                                  </div>
+                                <% }) %>
+                              </div>
+                              
+                          
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Create New Space Modal HTML -->
+<!-- Create New Space Modal HTML -->
+<div id="createSpaceModal" class="modal rbt-modal-box create-space-modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content wrapper top-flashlight leftside light-xl">
+            <!-- Close Button -->
+            <button class="close-button" data-bs-dismiss="modal" style="float: right; cursor: pointer;">
+                <i class="feather-x"></i>
+            </button>
+
+            <!-- Title -->
+            <h3>Create a New Space</h3>
+
+            <!-- Form to Create Space -->
+            <form id="createSpaceForm" method="POST" action="/spaces/create" enctype="multipart/form-data">
+                <!-- Company Name Input -->
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="companyName" />
+                </div>
+
+                <!-- Job Position Input -->
+                <div class="form-group">
+                    <label for="jobPosition">Job Position</label>
+                    <input type="text" id="jobPosition" name="jobPosition" required />
+                </div>
+
+                <!-- Job Description Text Area -->
+                <div class="form-group">
+                    <label for="jobDescription">Job Description</label>
+                    <div class="text-form">
+                        <textarea id="jobDescription" name="jobDescription" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Interview Rounds Select (using Select2) -->
+                <div class="form-group">
+                    <label for="interviewRounds">Select Interview Rounds</label>
+                    <select id="interviewRounds" name="interviewRounds" multiple="multiple" class="form-select select2 bg-none" aria-label="Select Interview Rounds" style="width: 100%;">
+                        <option value="HR">HR</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Aptitude">Aptitude</option>
+                        <!-- More rounds can be added as necessary -->
+                    </select>
+                </div>
+
+                <!-- Upload Resume -->
+                <div class="form-group">
+                    <label for="resume">Upload Resume</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required class="m-auto p-3" />
+                </div>
+
+                <!-- Circular Loading Indicator -->
+                <div id="loading" style="display: none;">
+                    <div class="loading-spinner"></div> <!-- You can add your custom loading spinner here -->
+                </div>
+
+                <!-- Additional Notes Section -->
+                <div class="form-group mt-3">
+                    <h6 class="title">Provide Your Additional Notes</h6>
+                    <div class="text-form">
+                        <textarea rows="4" placeholder="Optional: Add any additional notes..." ></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="bottom-btn mt--20">
+                    <button type="submit" class="btn btn-default round">
+                        <i class="feather-check-circle"></i> Create Space
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Include jQuery and Select2 library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Initialize Select2 on the Interview Rounds dropdown
+    $('#interviewRounds').select2({
+      placeholder: 'Select Interview Rounds',
+      width: '100%'
+    });
+
+    
+  });
+  $('#createSpaceForm').submit(function() {
+    $('#loading').show();  // Show loading spinner
+});
+
+</script>
+
+
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('rightbtn').click();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

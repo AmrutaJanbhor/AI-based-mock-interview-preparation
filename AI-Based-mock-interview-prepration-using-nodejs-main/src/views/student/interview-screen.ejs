@@ -1,0 +1,670 @@
+<style>
+      #loading-bar {
+      width: 100%;
+      height: 5px;
+      background-color: #ccc;
+      position: relative;
+    }
+
+    #loading-progress {
+      height: 100%;
+      width: 0;
+      background-color: #007bff;
+      transition: width 0.3s ease;
+    }
+    
+  .full-height {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5rem;
+  }
+
+  .main-container {
+      display: flex;
+      height: 90vh;
+      gap: 2rem; /* Space between the two columns */
+      width: 100%;
+      max-width: 1400px;
+  }
+
+  .interview-screen {
+      position: relative;
+      height: 100%;
+      overflow-y: auto; /* Scrollbar for the first column */
+  }
+
+
+  .camera-section {
+  text-align: center;
+  position: relative;
+  width: 95%;
+  background-color: #f0f0f0;
+  border-radius: 15px; /* Rounded corners */
+  overflow: hidden; /* Ensure content stays inside the rounded corners */
+  padding-top: 56.25%; /* 9 / 16 = 0.5625, so 56.25% to maintain 16:9 ratio */
+  height: 0; /* Reset height to allow padding-top to control the height */
+}
+
+.camera-section video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video covers the entire section */
+}
+
+  .interviewer-thumbnail {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      width: 80px;
+      height: 80px;
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%; /* Circle shape for thumbnail */
+      z-index: 1;
+  }
+
+  .interviewer-thumbnail.active {
+      background-color: #007bff;
+  }
+
+  .wave-animation {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      border-radius: 50%;
+      background: rgba(0, 123, 255, 0.3);
+      animation: wave 1.5s infinite ease-in-out;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+  }
+
+  #camera-container {
+        text-align: center;
+    }
+
+
+
+  .interviewer-thumbnail.active .wave-animation {
+      opacity: 1;
+  }
+
+  @keyframes wave {
+      0% {
+          transform: scale(1);
+          opacity: 0.5;
+      }
+      100% {
+          transform: scale(1.8);
+          opacity: 0;
+      }
+  }
+
+/* Base styles for the buttons */
+.mic-btn, .stop-btn, .next-btn, .edit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0; /* Default background color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: relative; /* Ensure wave animation is contained within the button */
+}
+
+/* Disabled state for buttons */
+.mic-btn:disabled, .stop-btn:disabled, .next-btn:disabled, .edit-btn:disabled {
+  background-color: #ccc; /* Light gray for disabled background */
+  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
+  box-shadow: none; /* Remove the shadow for disabled buttons */
+}
+
+/* Add hover effect */
+.mic-btn:hover, .stop-btn:hover, .next-btn:hover, .edit-btn:hover {
+  background-color: rgba(0, 123, 255, 0.8); /* Darker effect for all buttons */
+  transform: scale(1.05);
+}
+
+/* Disabled state hover effect */
+.mic-btn:disabled:hover, .stop-btn:disabled:hover, .next-btn:disabled:hover, .edit-btn:disabled:hover {
+  background-color: #ccc; /* Keep the disabled background color */
+  transform: none; /* No scaling effect for disabled buttons */
+}
+
+.mic-btn {
+  background-color: #007bff; /* Blue for mic button */
+}
+
+.stop-btn {
+  background-color: #dc3545; /* Red for stop button */
+}
+
+.next-btn {
+  background-color: #28a745; /* Green for next button */
+}
+
+.edit-btn {
+  background-color: #ffc107; /* Yellow for edit button */
+}
+
+/* Add hover effect */
+.mic-btn:hover, .stop-btn:hover, .next-btn:hover, .edit-btn:hover {
+  background-color: rgba(0, 123, 255, 0.8); /* Darker effect for all buttons */
+  transform: scale(1.05);
+}
+
+.mic-btn i, .stop-btn i, .next-btn i, .edit-btn i {
+  color: white;
+  font-size: 24px;
+}
+
+/* Wave animation specific to buttons */
+.mic-btn .wave-animation, 
+.stop-btn .wave-animation, 
+.next-btn .wave-animation, 
+.edit-btn .wave-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.3);
+  animation: wave 1.5s infinite ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* Wave animation active when button is pressed */
+.mic-btn.active .wave-animation, 
+.stop-btn.active .wave-animation, 
+.next-btn.active .wave-animation, 
+.edit-btn.active .wave-animation {
+  opacity: 1;
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+
+#listening-text {
+  font-size: 12px;
+  color: gray;
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* Disable state styles for buttons */
+#mic-button:disabled, #stop-question-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+
+  .questions-log a {
+      /* Styles for questions log buttons to differentiate them */
+      text-decoration: underline;
+      color: #007bff;
+      cursor: pointer;
+  }
+
+  .questions-log a:hover {
+      text-decoration: none;
+  }
+</style>
+
+
+<!-- Loading Bar (Top) -->
+<div id="loadingBar" style="
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 0%; 
+    height: 5px; 
+    background: #4CAF50; 
+    transition: width 0.5s ease-in-out;">
+</div>
+
+<!-- Full-Screen Loading Overlay (Hidden by Default) -->
+<div id="loadingOverlay" style="
+    display: none !important; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.7); 
+    z-index: 9999; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    flex-direction: column;
+">
+    <p>Submitting your interview...</p>
+    <div class="spinner"></div>
+</div>
+
+<!-- Spinner Styling -->
+<style>
+    .spinner {
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-top: 5px solid white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+
+<div class="full-height" >
+  <div id="loading-container" class="text-center">
+      <div id="loading-bar">
+        <div id="loading-progress"></div>
+      </div>
+      <p id="loading-message">Starting your interview...</p>
+    </div>
+
+
+  <div id="interview-container" class="main-container d-none">
+      <!-- Main Interview Section -->
+      <div class="col-12 col-md-7 bg-flashlight p-5" style="border-radius: 10px;">
+          <div class="interview-screen">
+              <!-- Question Section -->
+              <div class="question-section d-flex justify-content-between align-items-center">
+                  <h5 id="question-container" class="question-text">
+                      1. Question text will appear here, describing the task or query for the interviewee.
+                  </h5>
+                  <div class="header-buttons d-flex flex-column gap-2">
+                      <a id="stop-question-button" class="header-round-btn" title="Stop Speaking">
+                          <span><i class="feather-volume-x"></i></span>
+                      </a>
+                      <a id="replay-question-button" class="header-round-btn" title="Respeak">
+                          <span><i class="feather-refresh-ccw"></i></span>
+                      </a>
+                  </div>
+              </div>
+
+              <!-- Camera Section -->
+              <div class="camera-section mt-2"> 
+                  <!-- Student Camera View -->
+                  <div class="w-100 h-100 bg-secondary" id="camera-container">
+                      <video id="video" autoplay></video>
+                  </div>
+
+                  <!-- Interviewer Thumbnail -->
+                  <div class="interviewer-thumbnail">
+                      <span>S</span>
+                      <div class="wave-animation"></div>
+                  </div>
+              </div>
+
+              <!-- Answer Section -->
+              <div class="answer-section mt-3">
+                 
+                  <div class="header-buttons hb d-flex flex-row justify-content-center gap-4 mt-3">
+                    <div>
+                      <button id="mic-button" class="mic-btn" title="Start Answering">
+                        <i class="feather-mic"></i>
+                      </button>
+                      <span id="listening-text" style="display: none; font-size: 12px; color: gray; margin-top: 5px;">Listening...</span>
+                    </div>
+                  
+                    <button id="stop-speaking-button" class="stop-btn" title="Stop Speaking">
+                      <i class="feather-mic-off"></i>
+                    </button>
+                    
+                    <button id="next-button" class="next-btn" title="Next Question">
+                      <i class="feather-arrow-right"></i>
+                    </button>
+                    
+                    <button id="edit-button" class="edit-btn" title="Edit Question">
+                      <i class="feather-edit"></i>
+                    </button>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+
+    
+      <div class="col-12 col-md-5 bg-flashlight p-5" style="border-radius: 10px;">
+          <h4>Interview Progress</h4>
+          <div class="new-chat-form border-radius">
+            <textarea id="answer" rows="15" placeholder="Your answer will appear here..." disabled></textarea>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  // Initialize variables
+  const spaceId = '<%= spaceId %>'; // Passed from server
+  const roundName = '<%= roundName %>'; // Passed from server
+  let currentQuestionIndex = 0;
+  let questions = [];
+  let answers = {}; // Temporary storage for answers
+  let recognition;
+  let isRecording = false;
+  let currentAnswer = ''; // Store current answer while speaking
+  let currentUtterance = null; // Track current speech synthesis
+
+  // Show loading bar and fetch questions
+  async function initializeInterview() {
+    const loadingBar = document.getElementById('loading-progress');
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      if (progress >= 100) clearInterval(interval);
+      progress += 10;
+      loadingBar.style.width = `${progress}%`;
+    }, 300);
+
+    try {
+      // Fetch questions via API call
+      const response = await fetch(`/generate-questions/${spaceId}/${roundName}`);
+      const data = await response.json();
+      questions = data.questions;
+
+      // Once questions are loaded, hide loading and show interview UI
+      document.getElementById('loading-container').classList.add('d-none');
+      document.getElementById('interview-container').classList.remove('d-none');
+      showQuestion(currentQuestionIndex);
+    } catch (err) {
+      document.getElementById('loading-message').innerText = 'Error loading questions. Please try again.';
+      console.error('Error initializing interview:', err);
+    }
+  }
+
+  // Display the current question and speak it aloud
+  function showQuestion(index) {
+    const questionContainer = document.getElementById('question-container');
+    const micButton = document.getElementById('mic-button');
+    const stopQuestionButton = document.getElementById('stop-question-button');
+    questionContainer.textContent = questions[index];
+
+    // Stop any previous speech
+    speechSynthesis.cancel();
+
+    // Use Text-to-Speech to read the question aloud
+    currentUtterance = new SpeechSynthesisUtterance(questions[index]);
+
+    // Set the rate and pitch for more natural sound
+    currentUtterance.rate = 1; // Default rate
+    currentUtterance.pitch = 1; // Normal pitch
+
+    // Optional: Set a more natural voice (adjust as per browser)
+    const voices = speechSynthesis.getVoices();
+    // currentUtterance.voice = voices.find(voice => voice.name === "Google UK English Male") || voices[0];
+
+    // Disable buttons while speaking
+    micButton.disabled = true;
+    stopQuestionButton.disabled = false;
+
+    // When speech synthesis ends, enable the mic button and allow recording
+    currentUtterance.onend = () => {
+      micButton.disabled = false; // Enable mic button after speaking
+      stopQuestionButton.disabled = true;
+    };
+
+    speechSynthesis.speak(currentUtterance); // Speak the question
+  }
+
+  // Stop the question from being spoken
+  function stopQuestionSpeaking() {
+    const micButton = document.getElementById('mic-button');
+    const stopQuestionButton = document.getElementById('stop-question-button');
+
+    // Stop speech synthesis
+    speechSynthesis.cancel();
+
+    // Enable mic button and disable stop question button
+    micButton.disabled = false;
+    stopQuestionButton.disabled = true;
+  }
+
+  function checkSpeechRecognitionSupport() {
+    // Check for support in the current browser
+    if (!('webkitSpeechRecognition' in window)) {
+      // Speech recognition is not supported
+      alert('Your browser does not support speech recognition. You can answer manually.');
+      document.getElementById('mic-button').disabled = true;  // Disable mic button
+    } else {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.continuous = true;  // Enable continuous mode
+      recognition.interimResults = true;  // Enable interim results
+
+      recognition.onstart = () => {
+        currentAnswer = document.getElementById('answer').value || ''; // Preserve existing text
+        document.getElementById('mic-button').disabled = true;
+        document.getElementById('stop-speaking-button').disabled = false;
+      };
+
+      recognition.onresult = (event) => {
+        let finalTranscript = currentAnswer; // Start with existing text
+        let interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const result = event.results[i];
+          const transcript = result[0].transcript;
+
+          // If it's a final result, append it
+          if (result.isFinal) {
+            finalTranscript += ' ' + transcript.trim();
+          } else {
+            // Interim results are shown separately
+            interimTranscript += transcript;
+          }
+        }
+
+        // Update the answer with final and interim results
+        document.getElementById('answer').value = finalTranscript + 
+          (interimTranscript ? ` (${interimTranscript})` : '');
+        
+        // Update the current answer for continuity
+        currentAnswer = finalTranscript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event);
+        document.getElementById('mic-button').disabled = false;
+        document.getElementById('stop-speaking-button').disabled = true;
+      };
+
+      recognition.onend = () => {
+        document.getElementById('mic-button').disabled = false;
+        document.getElementById('stop-speaking-button').disabled = true;
+      };
+    }
+  }
+
+  function replayQuestion() {
+    showQuestion(currentQuestionIndex);
+  }
+
+  function toggleSpeechRecognition() {
+  const micButton = document.getElementById('mic-button');
+  const stopSpeakingButton = document.getElementById('stop-speaking-button');
+  const nextButton = document.getElementById('next-button');
+  const listeningText = document.getElementById('listening-text');
+  
+  // Start recording
+  currentAnswer = document.getElementById('answer').value || ''; // Preserve existing text
+  recognition.start();
+  
+  micButton.disabled = true;
+  stopSpeakingButton.disabled = false;
+  micButton.innerHTML = `<span ><i class="feather-mic"></i></span>
+                          <div class="wave-animation"></div>` ;  // Keep button text as 'Start'
+  document.getElementById('edit-button').style.display = 'none';
+  nextButton.disabled = true;
+  
+  // Show listening text below the button
+  listeningText.style.display = 'block';  // Display the "Listening..." text
+}
+
+
+  function stopSpeaking() {
+    const micButton = document.getElementById('mic-button');
+    const stopSpeakingButton = document.getElementById('stop-speaking-button');
+    const nextButton = document.getElementById('next-button');
+
+    if (recognition) {
+      recognition.stop(); // Stop recording
+    }
+
+    micButton.innerHTML = `<span ><i class="feather-mic"></i></span>
+                          <div class="wave-animation"></div>`;
+
+    micButton.disabled = false;
+    stopSpeakingButton.disabled = true;
+    document.getElementById('answer').disabled = false;
+    document.getElementById('edit-button').style.display = 'inline-block';
+    const listeningText = document.getElementById('listening-text');
+    listeningText.style.display = 'none';
+    nextButton.disabled = false;
+  }
+
+  // Save the current answer locally and move to the next question
+  function saveAnswerAndNext() {
+    const question = questions[currentQuestionIndex];
+    const answer = document.getElementById('answer').value;
+    const nextButton = document.getElementById('next-button');
+
+    // Save the answer locally in the answers object
+    answers[question] = answer;
+
+    // Proceed to the next question
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      document.getElementById('answer').value = '';
+      nextButton.disabled = true;
+      showQuestion(currentQuestionIndex);
+    } else {
+      finishInterview(); // Call finishInterview once all questions are answered
+    }
+  }
+
+  // Enable editing mode for the answer
+  function enableEditing() {
+    const editButton = document.getElementById('edit-button');
+    const answerTextarea = document.getElementById('answer');
+    answerTextarea.disabled = false;
+    editButton.style.display = 'none';
+    document.getElementById('next-button').disabled = false; // Allow to move to next question
+  }
+
+  async function finishInterview() {
+    try {
+        // Show the loading bar and overlay only when submitting
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingBar.style.display = 'block';
+        loadingOverlay.style.display = 'flex'; // Show overlay
+        document.body.style.pointerEvents = 'none'; // Disable all clicks
+
+        loadingBar.style.width = '10%'; // Start animation
+
+        // Simulate progress effect
+        let progress = 10;
+        const interval = setInterval(() => {
+            if (progress < 90) { // Stop at 90% until response is received
+                progress += 10;
+                loadingBar.style.width = progress + '%';
+            }
+        }, 500);
+
+        // Send the request
+        const response = await fetch(`/finish-round/${spaceId}/${roundName}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answers }),
+        });
+
+        clearInterval(interval); // Stop progress animation
+
+        if (response.ok) {
+            loadingBar.style.width = '100%'; // Complete progress
+            setTimeout(() => {
+                window.location.href = '/dashboard'; // Redirect after delay
+            }, 500);
+        } else {
+            alert('Error finishing interview. Please try again.');
+            loadingBar.style.display = 'none'; // Hide loading bar on error
+            loadingOverlay.style.display = 'none'; // Hide overlay on error
+            document.body.style.pointerEvents = 'auto'; // Re-enable clicks
+        }
+    } catch (err) {
+        console.error('Error finishing interview:', err);
+        alert('Error finishing interview. Please try again.');
+        document.getElementById('loadingBar').style.display = 'none'; // Hide loading bar
+        document.getElementById('loadingOverlay').style.display = 'none'; // Hide overlay
+        document.body.style.pointerEvents = 'auto'; // Re-enable clicks
+    }
+}
+
+  // Initialize camera stream
+  async function initializeCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.getElementById('video');
+      video.srcObject = stream;
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      alert('Your browser does not support webcam access. Please use a supported browser.');
+    }
+  }
+
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    checkSpeechRecognitionSupport();
+    initializeInterview();
+    initializeCamera();
+    
+    // New event listeners
+    document.getElementById('stop-question-button').addEventListener('click', stopQuestionSpeaking);
+    document.getElementById('replay-question-button').addEventListener('click', replayQuestion);
+    document.getElementById('mic-button').addEventListener('click', toggleSpeechRecognition);
+    document.getElementById('stop-speaking-button').addEventListener('click', stopSpeaking);
+    document.getElementById('next-button').addEventListener('click', saveAnswerAndNext);
+    document.getElementById('edit-button').addEventListener('click', enableEditing);
+  });
+</script>
